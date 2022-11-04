@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define BLOCK_SIZE sizeof(struct block)
+#define RECORDS_IN_BLOCK 4
 
 /*44. File records: parameters a0,a1,a2,a3,a4,x.
 Sorting by the value of the function g(x)=a0+a1x +a2x2+a3x3+a4x4*/
@@ -15,7 +16,7 @@ struct record
 
 struct block 
 {
-    struct record data[4];
+    struct record data[RECORDS_IN_BLOCK];
 } __attribute__((packed)); 
 
 //returns 0 if file was opened correctly
@@ -24,5 +25,6 @@ void remove_disk(FILE** file);
 int load_block(FILE** disk, int pos, struct block* data);
 int save_block(FILE** disk, int pos, struct block* data);
 
+void print_disk(FILE** disk);
 
 #endif

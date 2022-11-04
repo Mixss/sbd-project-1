@@ -21,7 +21,7 @@ int load_block(FILE** disk, int pos, struct block* data)
     fseek(*disk, BLOCK_SIZE * pos, 0);
     if(fread(data, sizeof(struct block), 1, *disk) < 1)
     {
-        printf("Error reading disk!\n");
+        //printf("Error reading disk!\n");
         return 1;
     }
     return 0;
@@ -36,4 +36,23 @@ int save_block(FILE** disk, int pos, struct block* data)
         return 1;
     }
     return 0;
+}
+
+void print_disk(FILE** disk)
+{
+    struct block loaded_block;
+    struct record loaded_record;
+    int pos = 0;
+
+    printf("Disk contents:\n");
+
+    while(load_block(disk, pos, &loaded_block) == 0)
+    {
+        printf("pos: %d\n", pos);
+        for(int i=0; i<RECORDS_IN_BLOCK; i++){
+            loaded_record = loaded_block.data[i];
+            printf("%d: id=%d, a0=%d, a1=%d, a2=%d, a3=%d, a4=%d, x=%d\n", pos * RECORDS_IN_BLOCK + i, loaded_record.id, loaded_record.a[0], loaded_record.a[1], loaded_record.a[2], loaded_record.a[3], loaded_record.a[4], loaded_record.x);
+        }
+        pos++;
+    }
 }
