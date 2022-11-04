@@ -13,7 +13,7 @@ int main(){
     FILE* disk;
     load_disk(&disk, diskname);
 
-    printf("dupa");
+
 
     remove_disk(&disk);
     return 0;

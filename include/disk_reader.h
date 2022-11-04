@@ -8,12 +8,12 @@ struct record
 {
     int id;
     long data;
-};
+} __attribute__((packed)); 
 
-struct block
+struct block 
 {
     struct record data[4];
-};
+} __attribute__((packed)); 
 
 //returns 0 if file was opened correctly
 int load_disk(FILE** file, const char* filename);
