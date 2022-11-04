@@ -48,7 +48,7 @@ void print_disk(FILE** disk)
 
     while(load_block(disk, pos, &loaded_block) == 0)
     {
-        printf("pos: %d\n", pos);
+        printf("block: %d\n", pos);
         for(int i=0; i<RECORDS_IN_BLOCK; i++){
             loaded_record = loaded_block.data[i];
             printf("%d: id=%d, a0=%d, a1=%d, a2=%d, a3=%d, a4=%d, x=%d\n", pos * RECORDS_IN_BLOCK + i, loaded_record.id, loaded_record.a[0], loaded_record.a[1], loaded_record.a[2], loaded_record.a[3], loaded_record.a[4], loaded_record.x);
