@@ -9,11 +9,11 @@ Uporządkowanie wg wartości funkcji g(x)=a0+a1x +a2x2+a3x3+a4x4
 
 int main(){
     
-    const char* diskname = "disk.bin";
+    const char* diskname = "./data/disk.bin";
     FILE* disk;
     load_disk(&disk, diskname);
 
-    
+    printf("dupa");
 
     remove_disk(&disk);
     return 0;

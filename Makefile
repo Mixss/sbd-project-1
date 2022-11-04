@@ -1,17 +1,23 @@
-FILES = ./build/program.o ./build/disk_reader.o
-INCLUDES = -I.*
-FLAGS = -Wall
+ODIR=./build
+IDIR=./include
+EXEC=program
 
-all: $(FILES)
-	gcc $(FILES) -o program
+_OBJ = program.o disk_reader.o
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+FLAGS = -Wall -I$(IDIR)
 
-./build/disk_reader.o: ./src/disk_reader.c
-	gcc $(INCLUDES) $(FLAGS) -c ./src/disk_reader.c -o ./build/disk_reader.o
+_DEPS = disk_reader.h 
+DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-./build/program.o: ./src/program.c 
-	gcc $(INCLUDES) $(FLAGS) -c ./src/program.c -o ./build/program.o
+$(ODIR)/%.o: src/%.c $(DEPS)
+	gcc -c $< -o $@  $(FLAGS)
+
+all: $(OBJ)
+	gcc $(OBJ) -o $(EXEC) $(FLAGS)
+
+.PHONY: clean
 
 clean:
-	rm -rf ./build/*
-	rm ./program
+	rm -rf $(ODIR)/*
+	rm $(EXEC)
 
