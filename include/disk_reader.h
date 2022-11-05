@@ -21,5 +21,9 @@ int save_block(FILE** disk, int pos, struct block* data);
 
 void print_disk(FILE** disk);
 void print_block(struct block* b);
+/*writes record to specified file*/
+int save_records_to_disk(FILE** file, struct record* records, int count);
+/*returns how much records have been loaded. Doesn't allocates records!*/
+int load_records_from_disk(FILE** disk, struct record *records);
 
 #endif

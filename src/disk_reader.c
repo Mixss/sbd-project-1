@@ -66,3 +66,52 @@ void print_block(struct block* b)
         print_record(&b->data[i]);
     }
 }
+
+int save_records_to_disk(FILE** disk, struct record records[], int count)
+{
+    int i = 0;
+    struct block block_to_write;
+
+    while(i < count)
+    {
+        block_to_write.data[i % RECORDS_IN_BLOCK] = records[i];
+        i++;
+        // check if block is full
+        if(i % RECORDS_IN_BLOCK == 0)
+        {
+            save_block(disk, i / RECORDS_IN_BLOCK - 1, &block_to_write);
+        }
+    }
+    // fill rest of block with empty records
+    if(i % RECORDS_IN_BLOCK != 0)
+    {
+        struct record rec_zero;
+        zero_record(&rec_zero);
+
+        while(i % RECORDS_IN_BLOCK == 0)
+        {
+            block_to_write.data[i % RECORDS_IN_BLOCK] = rec_zero;
+            i++;
+        }
+        save_block(disk, i / RECORDS_IN_BLOCK - 1, &block_to_write);
+    }
+
+    return 0;
+}
+
+int load_records_from_disk(FILE** disk, struct record *records)
+{
+    struct block loaded_block;
+    int pos = 0;
+    int count = 0;
+
+    while(load_block(disk, pos, &loaded_block) == 0)
+    {
+        for(int i=0; i<RECORDS_IN_BLOCK; i++){
+            records[count] = loaded_block.data[i];
+            count++;
+        }
+        pos++;
+    }
+    return count;
+}
