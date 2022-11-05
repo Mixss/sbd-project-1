@@ -1,2 +1,5 @@
 .vscode/
 build/
+core.*
+data/*
+program

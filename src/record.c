@@ -15,7 +15,7 @@ int load_record(FILE** disk, struct record* rec, int pos)
     int pos_in_block = pos % RECORDS_IN_BLOCK;
 
     struct block loaded_block;
-    if(load_block(disk, block_no, &load_block) != 0)
+    if(load_block(disk, block_no, &loaded_block) != 0)
     {
         printf("Failed to load one record!\n");
         return 1;
@@ -31,7 +31,7 @@ int save_record(FILE** disk, struct record* rec, int pos)
     int pos_in_block = pos % RECORDS_IN_BLOCK;
 
     struct block loaded_block;
-    if(load_block(disk, block_no, &load_block) != 0)
+    if(load_block(disk, block_no, &loaded_block) != 0)
     {
         printf("Failed to load one record!\n");
         return 1;
@@ -45,4 +45,20 @@ int save_record(FILE** disk, struct record* rec, int pos)
         return 2;
     }
     return 0;
+}
+
+void zero_record(struct record* rec)
+{
+    (*rec).id = -1;
+    (*rec).a[0] = 0;
+    (*rec).a[1] = 0;
+    (*rec).a[2] = 0;
+    (*rec).a[3] = 0;
+    (*rec).a[4] = 0;
+    (*rec).x = 0;
+}
+
+void print_record(struct record* rec)
+{
+    printf("id=%d -> g(x)=%d\t(a0=%d, a1=%d, a2=%d, a3=%d, a4=%d, x=%d)\n", (*rec).id, get_record_sorting_value((*rec)),  (*rec).a[0], (*rec).a[1], (*rec).a[2], (*rec).a[3], (*rec).a[4], (*rec).x);
 }

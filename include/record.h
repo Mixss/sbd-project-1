@@ -18,4 +18,9 @@ int load_record(FILE** disk, struct record* rec, int pos);
 /* saves the record to the disk, at given position*/
 int save_record(FILE** disk, struct record* rec, int pos);
 
+/*fills record with zeros*/
+void zero_record(struct record* rec);
+
+void print_record(struct record* rec);
+
 #endif
