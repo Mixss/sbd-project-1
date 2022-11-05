@@ -14,9 +14,12 @@ struct block
 //returns 0 if file was opened correctly
 int load_disk(FILE** file, const char* filename);
 void remove_disk(FILE** file);
+/*loads block from disk at given position, returns 0 if successfull*/
 int load_block(FILE** disk, int pos, struct block* data);
+/*saves block from disk at given position, returns 0 if successfull*/
 int save_block(FILE** disk, int pos, struct block* data);
 
 void print_disk(FILE** disk);
+void print_block(struct block* b);
 
 #endif
