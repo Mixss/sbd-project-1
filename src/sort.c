@@ -1,6 +1,7 @@
 #include "sort.h"
 #include "record.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define TAPE_1 0
 #define TAPE_2 1
@@ -22,15 +23,36 @@ int sort_natural_merge(FILE** file)
     printf("Sorting started...\n");
 
     distribute(&t3, tape, t_block, t_counter);
-
-    
-    // we have to fill not full blocks
     fill_blocks(tape, t_block, t_counter);
+    //t3 = fopen("./data/t3", "wrb");
+
+
 
     fclose(tape[TAPE_1]);
     fclose(tape[TAPE_2]);
     return 0;
 
+}
+
+void merge_tapes(FILE** target_tape, FILE* tapes[], unsigned int number_of_records)
+{
+    struct block loaded_block;
+    int pos = 0;
+    struct record* records = malloc(number_of_records * sizeof(struct record));
+    int records_counter = 0;
+
+    while(load_block(target_tape, pos, &loaded_block) == 0)
+    {
+        for(int i=0; i<RECORDS_IN_BLOCK; i++)
+        {
+            records[records_counter] = loaded_block.data[i];
+        }
+    }
+
+
+
+
+    free(records);
 }
 
 void distribute(FILE** t3, FILE* tape[], struct block tape_block[], int tape_counter[])
@@ -68,7 +90,7 @@ void distribute(FILE** t3, FILE* tape[], struct block tape_block[], int tape_cou
                         printf("Error saving block to the tape!\n");
                         return;
                     }
-                    printf("Saved block to tape %d\n", current_tape+1);
+                    //printf("Saved block to tape %d\n", current_tape+1);
                 }
                 last_record = rec;
             }
@@ -85,6 +107,7 @@ void distribute(FILE** t3, FILE* tape[], struct block tape_block[], int tape_cou
         }
         pos++;
     }
+    printf("Wykryto %d bloków\n", pos);
 }
 
 void fill_blocks(FILE* tape[], struct block t_block[], int t_counter[])

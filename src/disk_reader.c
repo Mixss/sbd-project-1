@@ -88,11 +88,14 @@ int save_records_to_disk(FILE** disk, struct record records[], int count)
         struct record rec_zero;
         zero_record(&rec_zero);
 
-        while(i % RECORDS_IN_BLOCK == 0)
+        while(i % RECORDS_IN_BLOCK != 0)
         {
             block_to_write.data[i % RECORDS_IN_BLOCK] = rec_zero;
             i++;
         }
+        printf("i=%d\n", i);
+        save_block(disk, i / RECORDS_IN_BLOCK - 1, &block_to_write);
+        // we have to add any block at the end of the file
         save_block(disk, i / RECORDS_IN_BLOCK - 1, &block_to_write);
     }
 
