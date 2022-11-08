@@ -5,8 +5,8 @@
 
 #define MAX_RECORDS_IN_FILE 256
 
-int save_to_mock_disk(FILE** file, struct record records[]);
 /*loads records from specified text file and creates new file stream(disk) to use*/
 int load_from_text_file(const char* filename);
-
+/* user can input own data*/
+int load_from_user_input();
 #endif
