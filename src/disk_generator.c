@@ -7,7 +7,7 @@ void generate_disk_random(const char* filename, int number_of_blocks, int max_va
 {
     srand(time(NULL));
     
-    FILE* disk = fopen(filename, "wb");
+    FILE* disk = fopen(filename, "wb+");
     struct record new_record;
     struct block new_block;
 
@@ -22,7 +22,8 @@ void generate_disk_random(const char* filename, int number_of_blocks, int max_va
         save_block(&disk, i, &new_block);
     }
     // save random block at the end of the file 
-    save_block(&disk, number_of_blocks, &new_block);
+    //save_block(&disk, number_of_blocks, &new_block);
+    fclose(disk);
 }
 
 void generate_random_record(struct record* rec, int max_value)

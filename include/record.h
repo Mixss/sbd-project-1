@@ -9,7 +9,7 @@ struct record
     int id;
     int a[5];
     int x;
-} __attribute__((packed)); 
+} __attribute__((__packed__)); 
 
 /* computes value of the function g(x)=a0+a1x +a2x2+a3x3+a4x4*/
 int get_record_sorting_value(struct record rec);

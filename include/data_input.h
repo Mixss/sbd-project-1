@@ -4,6 +4,7 @@
 #include "record.h"
 
 #define MAX_RECORDS_IN_FILE 256
+#define TEMP_DISK "./data/temp"
 
 /*loads records from specified text file and creates new file stream(disk) to use*/
 int load_from_text_file(const char* filename);

@@ -1,11 +1,6 @@
 #include "data_input.h"
 #include <stdlib.h>
 
-int read_data()
-{
-
-}
-
 int load_from_text_file(const char* filename)
 {
     FILE* file = fopen(filename, "r");
@@ -55,6 +50,7 @@ int load_from_user_input()
     struct record *records = malloc(MAX_RECORDS_IN_FILE * sizeof(struct record));
     int counter = 0;
     int numbers;
+    printf("Type in data in format: 'id x a0 a1 a2 a3 a4' separated with spaces:\n");
     while((numbers = scanf("%d %d %d %d %d %d %d", &id, &x, &a[0], &a[1], &a[2], &a[3], &a[4])) != EOF)
     {
         rec.id = id;
