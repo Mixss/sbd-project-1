@@ -38,6 +38,17 @@ int save_block(FILE** disk, int pos, struct block* data)
     return 0;
 }
 
+int save_block_at_end(FILE** disk, struct block* data)
+{
+    if(fwrite(data, BLOCK_SIZE, 1, *disk) < 1)
+    {
+        printf("Error writing to the disk!\n");
+        return 1;
+    }
+    return 0;
+}
+
+
 void print_disk(FILE** disk)
 {
     struct block loaded_block;

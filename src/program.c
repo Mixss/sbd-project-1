@@ -77,8 +77,6 @@ int main(int argc, char* argv[])
         }
     }
 
-    // JEZELI WYGENERUJEMY DYSK W PROGRAMIE TO MA DWA BLOKI JEZELI GO POTEM
-    // WCZYTAMY TO MA 3
     if(disktype == random_generated)
     {
         generate_disk_random(DEFAULT_DISK, random_number_of_blocks, 100);
@@ -95,6 +93,9 @@ int main(int argc, char* argv[])
     sort_natural_merge(&disk);
 
     remove_disk(&disk);
+    
+
+
 
     load_disk(&disk, "./data/t1");
     printf("\nTAPE 1: \n\n");
@@ -106,7 +107,7 @@ int main(int argc, char* argv[])
     print_disk(&disk);
     remove_disk(&disk);
 
-
+    return 0;
 
     if(disktype == text || disktype == input){
         remove(TEMP_DISK);
