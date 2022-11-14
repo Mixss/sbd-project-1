@@ -40,12 +40,51 @@ int sort_natural_merge(FILE** file)
         tape_records[i] = malloc(MAX_RECORDS_IN_FILE * sizeof(struct record));
         load_records(tape_records[i], &tape_size[i], &tape[i]);
     }
-    
-    
+    int no_records = tape_size[TAPE_1] + tape_size[TAPE_2];
+    //determine the smallest value from two tapes
+    int current_tape = get_record_sorting_value(tape_records[TAPE_1][0]) > get_record_sorting_value(tape_records[TAPE_2][0]) ? TAPE_2 : TAPE_1;
+    int tape_counter[DISTRIBUTION_TAPES] = {0};
+    // structures for saving
+    struct block block_to_save;
 
+    // actual merging
+    for(int i=0; i<no_records; i++)
+    {
+        // TO JEST WSZYSTKO BEZ SENSU BO DZIELE TASMY NA BLOKI A TRZEBA PO JEDNYM BLOKU DO T3 ZAPISYWAĆ
+        block_to_save.data[i % RECORDS_IN_BLOCK] = tape_records[current_tape][tape_counter[current_tape]];
+        tape_counter[current_tape]++;
+        // save block
+        if(tape_counter[current_tape] % RECORDS_IN_BLOCK == 0)
+        {
+            //save_block(&tape[current_tape], (tape_counter[current_tape] / RECORDS_IN_BLOCK) - 1, &block_to_save);
+            save_block_at_end(&tape[current_tape], &block_to_save);
+            zero_block(&block_to_save);
+        }
+
+
+        // check if tapes changes.
+        int tv[DISTRIBUTION_TAPES];
+        for(int j = 0; j<DISTRIBUTION_TAPES; j++)
+        {
+            tv[j] = get_record_sorting_value(tape_records[j][tape_counter[j]]);
+        }
+        
+        if(tv[current_tape] > tv[!current_tape])
+        {
+            current_tape = !current_tape;
+        }
+    }
+    // save blocks that aren't full
+    // if(tape_counter[j] % RECORDS_IN_BLOCK != 0)
+    // {
+    //     save_block(&tape[j], (tape_counter[j] / RECORDS_IN_BLOCK), &block_to_save);
+    // }
+    
 
     // free tapes
-
+    fclose(tape[TAPE_1]);
+    fclose(tape[TAPE_2]);
+    fclose(t3);
 
     return 0;
 }
