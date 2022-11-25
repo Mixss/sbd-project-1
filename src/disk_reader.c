@@ -1,4 +1,5 @@
 #include "disk_reader.h"
+#include "record_shell.h"
 
 int load_disk(FILE** file, const char* filename)
 {
@@ -131,4 +132,23 @@ int load_records_from_disk(FILE** disk, struct record *records)
         pos++;
     }
     return count;
+}
+
+int copy_disk(FILE** from, FILE** to)
+{
+    struct record_shell reader;
+    struct record_shell writer;
+
+    reader_init(from, &reader);
+    writer_init(to, &writer);
+
+    struct record loaded_record;
+
+    do
+    {
+        get_current_record(&loaded_record, &reader);
+        write_record(&loaded_record, &writer);
+    } while (load_next_record(&reader) == 0);
+
+    write_end(&writer);
 }

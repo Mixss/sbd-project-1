@@ -26,7 +26,7 @@ void print_block(struct block* b);
 int save_records_to_disk(FILE** file, struct record* records, int count);
 /*returns how much records have been loaded. Doesn't allocates records!*/
 int load_records_from_disk(FILE** disk, struct record *records);
-/* Copies disk content from one to another */
+/* Copies disk content from one to another. Assumes that files were opened */
 int copy_disk(FILE** from, FILE** to);
 
 #endif
