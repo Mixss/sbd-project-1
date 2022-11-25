@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 
     if(disktype == random_generated)
     {
-        generate_disk_random(DEFAULT_DISK, random_number_of_blocks, 100);
+        generate_disk_random(DEFAULT_DISK, random_number_of_blocks, 20);
         diskname = DEFAULT_DISK;
     }
     else if(disktype == text || disktype == input)
