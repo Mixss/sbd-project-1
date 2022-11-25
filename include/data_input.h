@@ -3,7 +3,7 @@
 #include "disk_reader.h"
 #include "record.h"
 
-#define MAX_RECORDS_IN_FILE 256
+#define MAX_RECORDS_IN_FILE 1024
 #define TEMP_DISK "./data/temp"
 
 /*loads records from specified text file and creates new file stream(disk) to use*/

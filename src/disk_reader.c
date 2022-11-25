@@ -30,6 +30,19 @@ int load_block(FILE** disk, int pos, struct block* data)
 int save_block(FILE** disk, int pos, struct block* data)
 {
     fseek(*disk, BLOCK_SIZE * pos, 0);
+    int err = 0;
+    if((err = fwrite(data, BLOCK_SIZE, 1, *disk)) < 1)
+    {
+        printf("Error writing to the disk! (%d)\n", err);
+        return 1;
+    }
+    return 0;
+}
+
+int save_block_at_end(FILE** disk, struct block* data)
+{
+    printf("Zapisuję: ");
+    print_record(&((*data).data[0]));
     if(fwrite(data, BLOCK_SIZE, 1, *disk) < 1)
     {
         printf("Error writing to the disk!\n");
@@ -37,6 +50,7 @@ int save_block(FILE** disk, int pos, struct block* data)
     }
     return 0;
 }
+
 
 void print_disk(FILE** disk)
 {

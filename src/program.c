@@ -11,6 +11,7 @@ Uporządkowanie wg wartości funkcji g(x)=a0+a1x +a2x2+a3x3+a4x4
 #include <string.h>
 #include "data_input.h"
 #include <stdlib.h>
+#include "record_shell.h"
 
 #define DEFAULT_DISK "./data/disk.bin"
 
@@ -77,11 +78,9 @@ int main(int argc, char* argv[])
         }
     }
 
-    // JEZELI WYGENERUJEMY DYSK W PROGRAMIE TO MA DWA BLOKI JEZELI GO POTEM
-    // WCZYTAMY TO MA 3
     if(disktype == random_generated)
     {
-        generate_disk_random(DEFAULT_DISK, random_number_of_blocks, 100);
+        generate_disk_random(DEFAULT_DISK, random_number_of_blocks, 20);
         diskname = DEFAULT_DISK;
     }
     else if(disktype == text || disktype == input)
@@ -92,10 +91,11 @@ int main(int argc, char* argv[])
     FILE* disk;
     load_disk(&disk, diskname);
     print_disk(&disk);
+
+
     sort_natural_merge(&disk);
-
     remove_disk(&disk);
-
+    
     load_disk(&disk, "./data/t1");
     printf("\nTAPE 1: \n\n");
     print_disk(&disk);
@@ -106,7 +106,10 @@ int main(int argc, char* argv[])
     print_disk(&disk);
     remove_disk(&disk);
 
-
+    load_disk(&disk, "./data/t3");
+    printf("\nTAPE 3: \n\n");
+    print_disk(&disk);
+    remove_disk(&disk);
 
     if(disktype == text || disktype == input){
         remove(TEMP_DISK);

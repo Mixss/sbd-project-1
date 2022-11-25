@@ -18,6 +18,7 @@ void remove_disk(FILE** file);
 int load_block(FILE** disk, int pos, struct block* data);
 /*saves block from disk at given position, returns 0 if successfull*/
 int save_block(FILE** disk, int pos, struct block* data);
+int save_block_at_end(FILE** disk, struct block* data);
 
 void print_disk(FILE** disk);
 void print_block(struct block* b);
