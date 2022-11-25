@@ -96,18 +96,18 @@ int main(int argc, char* argv[])
     sort_natural_merge(&disk);
     remove_disk(&disk);
     
-    load_disk(&disk, "./data/t1");
-    printf("\nTAPE 1: \n\n");
-    print_disk(&disk);
-    remove_disk(&disk);
+    // load_disk(&disk, "./data/t1");
+    // printf("\nTAPE 1: \n\n");
+    // print_disk(&disk);
+    // remove_disk(&disk);
 
-    load_disk(&disk, "./data/t2");
-    printf("\nTAPE 2: \n\n");
-    print_disk(&disk);
-    remove_disk(&disk);
+    // load_disk(&disk, "./data/t2");
+    // printf("\nTAPE 2: \n\n");
+    // print_disk(&disk);
+    // remove_disk(&disk);
 
     load_disk(&disk, "./data/t3");
-    printf("\nTAPE 3: \n\n");
+    printf("\nSORTED: \n\n");
     print_disk(&disk);
     remove_disk(&disk);
 

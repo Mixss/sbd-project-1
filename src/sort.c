@@ -14,6 +14,10 @@ bool merge(FILE* tapes[], FILE** t3);
 #define TAPE_2 1
 #define DISTRIBUTION_TAPES 2
 
+#define T1_LOCATION "./data/t1"
+#define T2_LOCATION "./data/t2"
+#define T3_LOCATION "./data/t3"
+
 
 int sort_natural_merge(FILE** file)
 {
@@ -24,16 +28,16 @@ int sort_natural_merge(FILE** file)
     
     FILE* tapes[DISTRIBUTION_TAPES];
 
-    tapes[0] = fopen("./data/t1", "wb");
-    tapes[1] = fopen("./data/t2", "wb");
+    tapes[0] = fopen(T1_LOCATION, "wb");
+    tapes[1] = fopen(T2_LOCATION, "wb");
 
     distribute(tapes, file, &reader);
 
     fclose(tapes[0]);
     fclose(tapes[1]);
-    t3 = fopen("./data/t3", "wb");
-    tapes[0] = fopen("./data/t1", "rb");
-    tapes[1] = fopen("./data/t2", "rb");
+    t3 = fopen(T3_LOCATION, "wb");
+    tapes[0] = fopen(T1_LOCATION, "rb");
+    tapes[1] = fopen(T2_LOCATION, "rb");
 
     sorted = merge(tapes, &t3);
 
@@ -43,18 +47,18 @@ int sort_natural_merge(FILE** file)
 
     while(!sorted)
     {
-        t3 = fopen("./data/t3", "rb");
+        t3 = fopen(T3_LOCATION, "rb");
         reader_init(&t3, &reader);
-        tapes[0] = fopen("./data/t1", "wb");
-        tapes[1] = fopen("./data/t2", "wb");
+        tapes[0] = fopen(T1_LOCATION, "wb");
+        tapes[1] = fopen(T2_LOCATION, "wb");
 
         distribute(tapes, &t3, &reader);
 
         fclose(tapes[0]);
         fclose(tapes[1]);
-        t3 = fopen("./data/t3", "wb");
-        tapes[0] = fopen("./data/t1", "rb");
-        tapes[1] = fopen("./data/t2", "rb");
+        t3 = fopen(T3_LOCATION, "wb");
+        tapes[0] = fopen(T1_LOCATION, "rb");
+        tapes[1] = fopen(T2_LOCATION, "rb");
 
         sorted = merge(tapes, &t3);
 
