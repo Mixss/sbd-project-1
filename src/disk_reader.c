@@ -1,5 +1,6 @@
 #include "disk_reader.h"
 #include "record_shell.h"
+#include "stats.h"
 
 int load_disk(FILE** file, const char* filename)
 {
@@ -25,6 +26,7 @@ int load_block(FILE** disk, int pos, struct block* data)
         //printf("Error reading disk!\n");
         return 1;
     }
+    add_read();
     return 0;
 }
 
@@ -37,6 +39,7 @@ int save_block(FILE** disk, int pos, struct block* data)
         printf("Error writing to the disk! (%d)\n", err);
         return 1;
     }
+    add_write();
     return 0;
 }
 
@@ -63,6 +66,7 @@ void print_disk(FILE** disk)
 
     while(load_block(disk, pos, &loaded_block) == 0)
     {
+        set_disk_reads(get_reads() - 1);
         printf("block: %d\n", pos);
         for(int i=0; i<RECORDS_IN_BLOCK; i++){
             loaded_record = loaded_block.data[i];
@@ -151,4 +155,5 @@ int copy_disk(FILE** from, FILE** to)
     } while (load_next_record(&reader) == 0);
 
     write_end(&writer);
+    return 0;
 }

@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
     enum Disk_type disktype = random_generated;
     int random_number_of_blocks = 2;
     const char* diskname;
+    bool print_phases = false;
     
     for(int i=1; i<argc; i++)
     {
@@ -71,9 +72,13 @@ int main(int argc, char* argv[])
             random_number_of_blocks = atoi(argv[i+1]);
             disktype = random_generated;
         }
+        else if(strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--print-phases") == 0)
+        {
+            print_phases = true;
+        }
         else if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
         {
-            printf("Options:\n-r\t--random <number>\t\tspecify number of blocks to be generated in random disk (./data/disk.bin). -r is default option with 2 blocks to generate\n-k\t--keyboard\t\ttype in input data\n-f\t--file <filename>\ttake input data from text file. One record per line with format: 'id x a0 a1 a2 a3 a4' separated with space\n-d\t--disk <filename>\tspecify own disk file location\n\n");
+            printf("Options:\n-r\t--random <number>\t\tspecify number of blocks to be generated in random disk (./data/disk.bin). -r is default option with 2 blocks to generate\n-k\t--keyboard\t\ttype in input data\n-f\t--file <filename>\ttake input data from text file. One record per line with format: 'id x a0 a1 a2 a3 a4' separated with space\n-d\t--disk <filename>\tspecify own disk file location\n-p\t--print-phases\t\tprint sorted file after each sorting phase\n\n");
             return 0;
         }
     }
@@ -91,29 +96,22 @@ int main(int argc, char* argv[])
     FILE* disk;
     load_disk(&disk, diskname);
     print_disk(&disk);
-
-
-    sort_natural_merge(&disk);
     remove_disk(&disk);
-    
-    // load_disk(&disk, "./data/t1");
-    // printf("\nTAPE 1: \n\n");
-    // print_disk(&disk);
-    // remove_disk(&disk);
 
-    // load_disk(&disk, "./data/t2");
-    // printf("\nTAPE 2: \n\n");
-    // print_disk(&disk);
-    // remove_disk(&disk);
+    sort_natural_merge(diskname, print_phases);
 
-    load_disk(&disk, "./data/t3");
+    if(disktype == text || disktype == input){
+        diskname = TEMP_DISK;
+    }
+
+    load_disk(&disk, diskname);
     printf("\nSORTED: \n\n");
     print_disk(&disk);
     remove_disk(&disk);
 
-    if(disktype == text || disktype == input){
-        remove(TEMP_DISK);
-    }
+    // if(disktype == text || disktype == input){
+    //     remove(TEMP_DISK);
+    // }
 
     return 0;
 }

@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "record_shell.h"
+#include "stats.h"
 
 // assumes that input_tape_reader is initialized
 void distribute(FILE* tapes[], FILE** input_tape, struct record_shell* input_tape_reader);
@@ -19,10 +20,19 @@ bool merge(FILE* tapes[], FILE** t3);
 #define T3_LOCATION "./data/t3"
 
 
-int sort_natural_merge(FILE** file)
+int sort_natural_merge(const char* filename, bool print_disk_after_phase)
 {
+    int phase = 1;
+    
+    FILE* file = fopen(filename, "rb");
+    if(!file)
+    {
+        printf("Failed to load disk!\n");
+        return 1;
+    }
+    
     struct record_shell reader;
-    reader_init(file, &reader);
+    reader_init(&file, &reader);
     FILE* t3;
     bool sorted = false;
     
@@ -31,7 +41,7 @@ int sort_natural_merge(FILE** file)
     tapes[0] = fopen(T1_LOCATION, "wb");
     tapes[1] = fopen(T2_LOCATION, "wb");
 
-    distribute(tapes, file, &reader);
+    distribute(tapes, &file, &reader);
 
     fclose(tapes[0]);
     fclose(tapes[1]);
@@ -44,10 +54,19 @@ int sort_natural_merge(FILE** file)
     fclose(tapes[0]);
     fclose(tapes[1]);
     fclose(t3);
+    fclose(file);
 
     while(!sorted)
     {
         t3 = fopen(T3_LOCATION, "rb");
+        
+        if(print_disk_after_phase)
+        {
+            printf("\nDisk after phase %d of sorting:\n", phase);
+            print_disk(&t3);
+        }
+        
+        
         reader_init(&t3, &reader);
         tapes[0] = fopen(T1_LOCATION, "wb");
         tapes[1] = fopen(T2_LOCATION, "wb");
@@ -65,9 +84,20 @@ int sort_natural_merge(FILE** file)
         fclose(tapes[0]);
         fclose(tapes[1]);
         fclose(t3);
+
+        phase++;
+        
     }
 
-    return 1;
+    t3 = fopen(T3_LOCATION, "rb"); 
+    file = fopen(filename, "wb");   
+    copy_disk(&t3, &file);
+    fclose(t3);
+    fclose(file);
+
+    printf("\nSort has ended in %d phases with %d disk reads and %d disk writes\n", phase, get_reads(), get_writes());
+
+    return 0;
 }
 
 void distribute(FILE* tapes[], FILE** input_tape, struct record_shell* input_tape_reader)
