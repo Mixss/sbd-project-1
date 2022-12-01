@@ -9,7 +9,7 @@
 struct block 
 {
     struct record data[RECORDS_IN_BLOCK];
-} __attribute__((__packed__)); 
+} __attribute__((packed)); 
 
 //returns 0 if file was opened correctly
 int load_disk(FILE** file, const char* filename);

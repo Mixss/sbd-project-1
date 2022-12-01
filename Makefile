@@ -17,6 +17,9 @@ all: $(OBJ)
 
 .PHONY: clean
 
+data_generator: experiment/data_generator.c
+	gcc experiment/data_generator.c -o ./generator $(FLAGS)
+
 clean:
 	rm -rf $(ODIR)/*
 	rm $(EXEC)

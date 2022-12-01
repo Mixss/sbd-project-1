@@ -12,6 +12,7 @@ Uporządkowanie wg wartości funkcji g(x)=a0+a1x +a2x2+a3x3+a4x4
 #include "data_input.h"
 #include <stdlib.h>
 #include "record_shell.h"
+#include "stats.h"
 
 #define DEFAULT_DISK "./data/disk.bin"
 
@@ -52,16 +53,6 @@ int main(int argc, char* argv[])
             load_from_user_input();
             disktype = input;
         }
-        else if(strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--disk") == 0)
-        {
-            if(argc <= i + 1)
-            {
-                printf("File not specified.\n");
-                return 1;
-            }
-            disktype = own_location;
-            diskname = argv[i+1];
-        }
         else if(strcmp(argv[i], "-r") == 0 || strcmp(argv[i], "--random") == 0)
         {
             if(argc <= i + 1)
@@ -78,7 +69,7 @@ int main(int argc, char* argv[])
         }
         else if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
         {
-            printf("Options:\n-r\t--random <number>\t\tspecify number of blocks to be generated in random disk (./data/disk.bin). -r is default option with 2 blocks to generate\n-k\t--keyboard\t\ttype in input data\n-f\t--file <filename>\ttake input data from text file. One record per line with format: 'id x a0 a1 a2 a3 a4' separated with space\n-d\t--disk <filename>\tspecify own disk file location\n-p\t--print-phases\t\tprint sorted file after each sorting phase\n\n");
+            printf("Options:\n-r\t--random <number>\t\tspecify number of blocks to be generated in random disk (./data/disk.bin). -r is default option with 2 blocks to generate\n-k\t--keyboard\t\ttype in input data\n-f\t--file <filename>\ttake input data from text file. One record per line with format: 'id x a0 a1 a2 a3 a4' separated with space\n-p\t--print-phases\t\tprint sorted file after each sorting phase\n\n");
             return 0;
         }
     }
@@ -98,6 +89,9 @@ int main(int argc, char* argv[])
     print_disk(&disk);
     remove_disk(&disk);
 
+    set_disk_reads(0);
+    set_disk_writes(0);
+    
     sort_natural_merge(diskname, print_phases);
 
     if(disktype == text || disktype == input){

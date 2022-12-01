@@ -24,7 +24,7 @@ int sort_natural_merge(const char* filename, bool print_disk_after_phase)
 {
     int phase = 1;
     
-    FILE* file = fopen(filename, "rb");
+    FILE* file = fopen(filename, "rb+");
     if(!file)
     {
         printf("Failed to load disk!\n");
@@ -75,6 +75,12 @@ int sort_natural_merge(const char* filename, bool print_disk_after_phase)
 
         fclose(tapes[0]);
         fclose(tapes[1]);
+
+        // printf("\nPrinting tapes:\n");
+        // print_disk(&tapes[0]);
+        // print_disk(&tapes[1]);
+        // printf("\n");
+
         t3 = fopen(T3_LOCATION, "wb");
         tapes[0] = fopen(T1_LOCATION, "rb");
         tapes[1] = fopen(T2_LOCATION, "rb");
@@ -89,13 +95,15 @@ int sort_natural_merge(const char* filename, bool print_disk_after_phase)
         
     }
 
+    printf("\nSort has ended in %d phases with %d disk reads and %d disk writes\n", phase, get_reads(), get_writes());
+
     t3 = fopen(T3_LOCATION, "rb"); 
     file = fopen(filename, "wb");   
     copy_disk(&t3, &file);
     fclose(t3);
     fclose(file);
 
-    printf("\nSort has ended in %d phases with %d disk reads and %d disk writes\n", phase, get_reads(), get_writes());
+    
 
     return 0;
 }

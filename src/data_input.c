@@ -1,5 +1,6 @@
 #include "data_input.h"
 #include <stdlib.h>
+#include "record_shell.h"
 
 int load_from_text_file(const char* filename)
 {
@@ -15,9 +16,11 @@ int load_from_text_file(const char* filename)
     int x;
     int a[5];
 
+    FILE* created_disk = fopen("./data/temp", "wb");
+
     struct record rec;
-    struct record *records = malloc(MAX_RECORDS_IN_FILE * sizeof(struct record));
-    int counter = 0;
+    struct record_shell writer;
+    writer_init(&created_disk, &writer);
     while(fscanf(file, "%d %d %d %d %d %d %d", &id, &x, &a[0], &a[1], &a[2], &a[3], &a[4]) != EOF)
     {
         rec.id = id;
@@ -27,14 +30,11 @@ int load_from_text_file(const char* filename)
         rec.a[2] = a[2];
         rec.a[3] = a[3];
         rec.a[4] = a[4];
-        records[counter] = rec;
-        counter++;
+        write_record(&rec, &writer);
     }
-    fclose(file);
-    // create temp disk and fill it with records
-    FILE* created_disk = fopen("./data/temp", "wb");
+    write_end(&writer);
 
-    save_records_to_disk(&created_disk, records, counter);
+    fclose(file);
     fclose(created_disk);
     
     return 0;
@@ -46,12 +46,13 @@ int load_from_user_input()
     int x;
     int a[5];
 
+    FILE* created_disk = fopen("./data/temp", "wb");
+
     struct record rec;
-    struct record *records = malloc(MAX_RECORDS_IN_FILE * sizeof(struct record));
-    int counter = 0;
-    int numbers;
+    struct record_shell writer;
+    writer_init(&created_disk, &writer);
     printf("Type in data in format: 'id x a0 a1 a2 a3 a4' separated with spaces:\n");
-    while((numbers = scanf("%d %d %d %d %d %d %d", &id, &x, &a[0], &a[1], &a[2], &a[3], &a[4])) != EOF)
+    while(scanf("%d %d %d %d %d %d %d", &id, &x, &a[0], &a[1], &a[2], &a[3], &a[4]) != EOF)
     {
         rec.id = id;
         rec.x = x;
@@ -60,13 +61,11 @@ int load_from_user_input()
         rec.a[2] = a[2];
         rec.a[3] = a[3];
         rec.a[4] = a[4];
-        records[counter] = rec;
-        counter++;
+        write_record(&rec, &writer);
     }
     // create temp disk and fill it with records
-    FILE* created_disk = fopen("./data/temp", "wb");
+    write_end(&writer);
 
-    save_records_to_disk(&created_disk, records, counter);
     fclose(created_disk);
     
     return 0;
